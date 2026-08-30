@@ -16,7 +16,7 @@ if (!Number.isInteger(dbPort)) {
   throw new Error("DB_PORT는 정수여야 합니다.");
 }
 
-const pool = new Pool({
+export const pool = new Pool({
   host: getRequiredEnv("DB_HOST"),
   port: dbPort,
   database: getRequiredEnv("DB_NAME"),
