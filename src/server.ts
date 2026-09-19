@@ -1,5 +1,5 @@
 import express from "express";
-import { checkDatabaseConnection, pool } from "./db.js";
+import { checkDatabaseConnection, pool, getExpenses } from "./db.js";
 
 const app = express();
 app.use(express.json());
@@ -9,6 +9,12 @@ app.get("/health", (_request, response) => {
   response.status(200).json({
     status: "ok",
   });
+});
+
+app.get("/expenses", async (_request, response) => {
+  const expenses = await getExpenses();
+
+  return response.status(200).json(expenses);
 });
 
 app.post("/expenses", async (request, response) => {
