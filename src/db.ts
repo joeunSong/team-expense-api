@@ -24,6 +24,18 @@ export const pool = new Pool({
   password: getRequiredEnv("DB_PASSWORD"),
 });
 
+export async function getExpenses() {
+  const { rows } = await pool.query(
+    `
+      SELECT *
+      FROM expenses
+      ORDER BY submitted_at DESC;
+    `,
+  );
+
+  return rows;
+}
+
 export async function checkDatabaseConnection(): Promise<void> {
   await pool.query("SELECT 1");
 }
