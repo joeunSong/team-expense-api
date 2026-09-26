@@ -182,14 +182,18 @@ PostgreSQL을 로컬 운영체제에 직접 설치하는 방법도 있었지만,
 [x] ORDER BY 학습
 [x] LIMIT / OFFSET 학습
 
-[ ] pool.query 사용 숙련
-[ ] 경비 목록 조회 API 마무리
+[x] pool.query 사용 숙련
+[x] 경비 목록 조회 API 마무리
 
-[ ] 승인 API
-[ ] 반려 API
-[ ] 입력 검증
-[ ] 상태 전이 규칙
+[x] UPDATE 학습
+[x] PATCH 요청 및 req.params / req.body 학습
+[x] async / await와 Promise 학습
+[x] HTTP 상태 코드(400 / 404 / 409) 처리
+[x] 승인 API
+[x] 반려 API
+[x] 입력 검증
+[x] 상태 전이 규칙
+
 [ ] Transaction
 [ ] 인증
 [ ] 인가
-```

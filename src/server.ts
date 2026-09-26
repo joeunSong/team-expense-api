@@ -1,5 +1,5 @@
 import express from "express";
-import { checkDatabaseConnection, pool, getExpenses } from "./db.js";
+import { checkDatabaseConnection, pool, getExpenses, updateExpenseStatus, expenseExists } from "./db.js";
 
 const app = express();
 app.use(express.json());
@@ -210,6 +210,41 @@ app.post("/expenses", async (request, response) => {
   return response.status(201).json({
     expense: result.rows[0],
   });
+});
+
+app.patch("/expenses/:id/status", async (req, res) => {
+  const id = Number(req.params.id);
+  const status = req.body.status;
+
+  if (!Number.isInteger(id) || id < 1) {
+    return res.status(400).json({
+      message: "id는 1 이상의 정수여야 합니다.",
+    });
+  }
+
+  if (status !== "APPROVED" && status !== "REJECTED") {
+    return res.status(400).json({
+      message: "status는 APPROVED 또는 REJECTED만 가능합니다.",
+    });
+  }
+
+  const result = await updateExpenseStatus(id, status);
+
+  if (!result) {
+    const exists = await expenseExists(id);
+
+    if (!exists) {
+      return res.status(404).json({
+        message: "경비를 찾을 수 없습니다.",
+      });
+    }
+
+    return res.status(409).json({
+      message: "이미 처리된 경비입니다.",
+    });
+  }
+
+  return res.status(200).json({expense: result});
 });
 
 async function startServer(): Promise<void> {

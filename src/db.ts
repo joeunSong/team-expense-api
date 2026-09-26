@@ -39,3 +39,33 @@ export async function getExpenses() {
 export async function checkDatabaseConnection(): Promise<void> {
   await pool.query("SELECT 1");
 }
+
+export async function updateExpenseStatus(
+  id: number,
+  status: string,
+) {
+  const res = await pool.query(
+    `
+      UPDATE expenses
+      SET status = $1
+      WHERE status = 'PENDING' AND id = $2
+      RETURNING *;
+    `,
+    [status, id],
+  );
+
+  return res.rows[0];
+}
+
+export async function expenseExists(id: number) {
+  const res = await pool.query(
+    `
+      SELECT id
+      FROM expenses
+      WHERE id = $1;
+    `,
+    [id],
+  );
+
+  return res.rows.length > 0;
+}
